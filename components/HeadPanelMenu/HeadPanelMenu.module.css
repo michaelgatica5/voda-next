@@ -1,0 +1,24 @@
+.linkHead {
+    width: 100px;
+      height: 70px;
+      color: rgba(255, 255, 255, 0.5);
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .linkHead:first-child {
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .linkHead:hover {
+    color: #e9ecef;
+  }
+  
+  .linkHead div {
+    justify-items: center !important;
+  }
+  
+  .textHead {
+      font-size: 14px;
+  }

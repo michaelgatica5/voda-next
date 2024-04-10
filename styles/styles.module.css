@@ -1,0 +1,140 @@
+/* logo */
+.logo {
+    width: 240px;
+    height: 70px;
+    background-color: #0759ad;
+}
+
+.logoBar {
+  font-size: 26px;
+}
+
+.logoBar svg:hover{
+  fill: white;
+}
+
+/* headpanel */
+.headPanel {
+  background-color: #0866C6;
+  height: 70px;
+  left: 240px !important;
+  z-index: 1000;
+}
+
+.linkHead {
+  width: 100px;
+    height: 70px;
+    color: rgba(255, 255, 255, 0.5);
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.linkHead:first-child {
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.linkHead:hover {
+  color: #e9ecef;
+}
+
+.linkHead div {
+  justify-items: center !important;
+}
+
+.textHead {
+    font-size: 14px;
+}
+
+.navBar {
+  height: 70px;
+}
+
+.NavEach {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.toggleDrop::after {
+  display: none;
+}
+
+.menuDrop {
+  transform: translate(0px, 55px) !important;
+  width: 240px;
+  border-width: 0px 1px 1px;
+  border-style: solid solid solid;
+  border-color: rgb(8, 102, 198) rgb(8, 102, 198) rgb(8, 102, 198);
+  border-image: initial;
+  margin: 0.125rem 0px 0px;
+  min-width: 10rem;
+  font-size: 0.875rem;
+  color: rgb(134, 139, 161);
+  background-color: rgb(255, 255, 255);
+  background-clip: padding-box;
+}
+
+.iconUser {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.iconUser:hover {
+  color: #e9ecef;
+}
+
+/* sidebar */
+.sidebar {
+  width: 240px;
+  overflow-y: auto;
+  top: 70px;
+  bottom: 0;
+  padding: 10px 0;
+  background-color: #212529;
+  transition: all 0.2s ease-in-out;
+}
+
+.mainpanel{
+  margin-left: 240px;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 70px;
+  transition: all 0.2s ease-in-out;
+}
+
+.boxItemSidebar {
+  border-top: 1px solid #282d31;
+}
+
+.itemSidebar {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 15px;
+    position: relative;
+}
+
+.itemSidebar{
+  color: #868e96;
+}
+
+.itemSidebar:last-child {
+  border-bottom: 1px solid #282d31;
+  color: #868e96;
+  border-top: 1px solid #282d31;
+}
+
+.itemSidebar:last-child:hover{
+  color: #e9ecef;
+  background: #262a2f;
+}
+
+.textSidebar {
+  font-size: 14px;
+}
+
+.itemSidebar:hover {
+  background-color: #262a2f;
+  color: #e9ecef;
+}

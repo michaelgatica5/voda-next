@@ -1,0 +1,7 @@
+.logoBar {
+    font-size: 26px;
+  }
+  
+  .logoBar svg:hover{
+    fill: white;
+  }
