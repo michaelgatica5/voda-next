@@ -12,6 +12,7 @@ import Logo from "@/components/Logo/Logo";
 import HeadPanelMenu from "@/components/HeadPanelMenu/HeadPanelMenu";
 import HeadPanelUser from "@/components/HeadPanelUser/HeadPanelUser";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -35,7 +36,7 @@ export default function RootLayout({
 			<head></head>
 			<body className={inter.className}>
 				<main>
-					<div className={`fixed top-0 flex justify-between items-center pl-4 ${styles.logo}`}>
+					<div className={`fixed top-0 flex justify-between items-center px-5 ${styles.logo}`}>
 						<Logo />
 					</div>
 					<div className={`fixed top-0 flex justify-between items-center ${styles.headPanel}`}>
