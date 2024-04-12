@@ -11,6 +11,7 @@ import { Inter } from "next/font/google";
 import Logo from "@/components/Logo/Logo";
 import HeadPanelMenu from "@/components/HeadPanelMenu/HeadPanelMenu";
 import HeadPanelUser from "@/components/HeadPanelUser/HeadPanelUser";
+import Sidebar from "@/components/Sidebar/Sidebar";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -43,8 +44,8 @@ export default function RootLayout({
 						<HeadPanelMenu />
 						<HeadPanelUser />
 					</div>
-					<div className={`fixed top-0 py-2 h-screen ${styles.sidebar}`}>
-						{/* <Sidebar /> */}
+					<div className={`fixed py-2 h-screen ${styles.sidebar}`}>
+						<Sidebar />
 					</div>
 					<div className={`${styles.mainpanel}`}>
 						{children}
