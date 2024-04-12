@@ -1,7 +1,12 @@
 .logoBar {
     font-size: 26px;
+    color: rgba(255, 255, 255, 0.5);
   }
   
+  .logoBar:hover {
+    color: #e9ecef;
+  }
+
   .logoBar svg:hover{
     fill: white;
   }

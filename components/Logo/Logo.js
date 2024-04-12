@@ -3,6 +3,8 @@ import Image from "next/image";
 // import { FaBars } from "react-icons/fa";
 import styles from '../Logo/Logo.module.css';
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Logo = () => {
     return (
@@ -15,16 +17,9 @@ const Logo = () => {
                     alt="Logo Voda"
                     />
                 </Link>
-                <a href="#" className={`${styles.logoBar}`}>
-                    {/* <FaBars
-                        style={{
-                            color: '#83acd6',
-                        }}
-                    /> */}
-                </a>
-                <a>
-                    <i></i>
-                </a>
+                <Link href="#" className={`transition-all duration-200 ease-in-out ${styles.logoBar}`}>
+                    <FontAwesomeIcon className={`w-6`}  icon={faBars}  />
+                </Link>
         </>
         
         
