@@ -23,6 +23,9 @@ import { SearchIcon } from "./SearchIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, users, statusOptions } from "./data";
 import { capitalize } from "./utils";
+import styles from './Providers.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan, faPencil, faEye } from "@fortawesome/free-solid-svg-icons";
 
 const statusColorMap = {
 	active: "success",
@@ -110,8 +113,8 @@ export default function ProviderPage() {
 				);
 			case "actions":
 				return (
-					<div className="relative flex justify-end items-center gap-2">
-						<Dropdown>
+					<div className="relative flex justify-center items-center gap-1">
+						{/* <Dropdown>
 							<DropdownTrigger>
 								<Button isIconOnly size="sm" variant="light">
 									<VerticalDotsIcon className="text-default-300" />
@@ -122,7 +125,38 @@ export default function ProviderPage() {
 								<DropdownItem>Edit</DropdownItem>
 								<DropdownItem>Delete</DropdownItem>
 							</DropdownMenu>
-						</Dropdown>
+						</Dropdown> */}
+						<Button 
+							color="warning" 
+							size="sm" 
+							aria-label="Delete"
+							className="bg-white rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
+							isIconOnly 
+							variant="faded" 
+						>
+							<FontAwesomeIcon size="md" icon={faEye} />
+						</Button>
+						<Button 
+							color="warning" 
+							size="sm" 
+							aria-label="Delete"
+							className="bg-white rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
+							isIconOnly 
+							variant="faded" 
+						>
+							<FontAwesomeIcon size="md" icon={faPencil} />
+						</Button>
+						<Button 
+							color="warning" 
+							size="sm" 
+							aria-label="Delete"
+							className="bg-white rounded border border-tabs-red text-tabs-red hover:bg-tabs-red hover:text-white"
+							isIconOnly 
+							variant="faded" 
+						>
+							<FontAwesomeIcon size="md" icon={faTrashCan} />
+						</Button>
+						
 					</div>
 				);
 			default:
@@ -163,18 +197,66 @@ export default function ProviderPage() {
 
 	const topContent = React.useMemo(() => {
 		return (
-			<div className="flex flex-col gap-4">
+			<div className="flex justify-between">
+				<div className="flex gap-1.5">
+					<div className="flex flex-wrap gap-4 items-center">	
+						<Button 
+							color="primary" 
+							variant="ghost"
+							className="h-7 font-bold text-xs font-normal py-2 px-2 rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
+						>
+							Nuevo Proveedor
+						</Button>  
+					</div>
+					<div className="flex gap-4 items-center">
+						<Button 
+							color="warning" 
+							size="sm" 
+							aria-label="Delete"
+							className="h-7 bg-white rounded border border-tabs-red text-tabs-red hover:bg-tabs-red hover:text-white"
+							isIconOnly 
+							variant="faded" 
+						>
+							<FontAwesomeIcon size="md" icon={faTrashCan} />
+						</Button>
+					</div>
+					<div className="flex justify-between items-center">
+						<label className="flex items-center text-black text-small ">
+							
+							<select
+								className="h-7 mr-3 bg-transparent outline-none text-default-400 text-small border border-gray-300 rounded-md px-1.5 py-1 w-16"
+								onChange={onRowsPerPageChange}
+							>
+								<option className="py-10" value="5">5</option>
+								<option value="10">10</option>
+								<option value="15">15</option>
+								<option value="20">20</option>
+							</select>
+							items/página
+						</label>
+					</div>
+				</div>
 				<div className="flex justify-between gap-3 items-end">
 					<Input
 						isClearable
-						className="w-full sm:max-w-[44%]"
-						placeholder="Search by name..."
-						startContent={<SearchIcon />}
+						className="w-full sm:max-w-[100%]"
+						placeholder="Buscar"
+						// startContent={<SearchIcon />}
 						value={filterValue}
 						onClear={() => onClear()}
 						onValueChange={onSearchChange}
+						classNames={{
+							base: "h-auto",
+							mainWrapper: "h-max border border-gray-300",
+							input: "text-small bg-white p-3",
+							inputWrapper: "p-0 h-6 bg-white font-normal text-default-500", //bg-default-400/20 dark:bg-default-500/20
+						  }}
+						  size="sm"
+						//   startContent={<SearchIcon size={18} />}
+						  type="search"
 					/>
-					<div className="flex gap-3">
+				</div>
+					{/* <div className="flex gap-3">
 						<Dropdown>
 							<DropdownTrigger className="hidden sm:flex">
 								<Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
@@ -220,21 +302,9 @@ export default function ProviderPage() {
 						<Button color="primary" endContent={<PlusIcon />}>
 							Add New
 						</Button>
-					</div>
-				</div>
-				<div className="flex justify-between items-center">
-					<label className="flex items-center text-default-400 text-small">
-						Rows per page:
-						<select
-							className="bg-transparent outline-none text-default-400 text-small"
-							onChange={onRowsPerPageChange}
-						>
-							<option value="5">5</option>
-							<option value="10">10</option>
-							<option value="15">15</option>
-						</select>
-					</label>
-				</div>
+					</div> */}
+				
+				
 			</div>
 		);
 	}, [
@@ -250,22 +320,40 @@ export default function ProviderPage() {
 	const bottomContent = React.useMemo(() => {
 		return (
 			<div className="py-2 px-2 flex justify-between items-center">
-				<span className="text-default-400 text-small">Total {users.length} users</span>
-				<div className="hidden sm:flex w-[30%] justify-end gap-2">
-					<Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
-						Previous
+				<span className="text-default-400 text-small">Mostrando {page} - {pages} de {users.length} entradas</span>
+				<div className="hidden sm:flex w-[30%] justify-end gap-0.5 h-9">
+					<Button 
+					className="rounded-none h-auto text-black text-sm"
+					isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+						Anterior
 					</Button>
 					<Pagination
 						isCompact
-						showControls
+						// showControls
 						showShadow
-						color="primary"
+						color="primary-blue"
 						page={page}
+						
 						total={pages}
 						onChange={setPage}
+						classNames={{
+							
+							base: "",
+							wrapper: "h-full",
+							prev: "",
+							next: "",
+							item: "",
+							cursor: "bg-primary-blue rounded-none",
+							forwardIcon: "",
+							ellipsis: "",
+							chevronNext: "",
+
+						}}
 					/>
-					<Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
-						Next
+					<Button
+					 className="rounded-none h-auto text-black text-sm"
+					 isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+						Siguiente
 					</Button>
 				</div>
 			</div>
@@ -274,13 +362,36 @@ export default function ProviderPage() {
 
 	return (
 		<Table
+			
 			aria-label="Example table with custom cells, pagination and sorting"
 			isHeaderSticky
 			bottomContent={bottomContent}
 			bottomContentPlacement="outside"
+			
 			// classNames={{
-			// 	wrapper: "max-h-[382px]",
+			// 	wrapper: "max-h-[382px] bg-red-800",
 			// }}
+			checkboxesProps={{
+				radius: "none"
+			}}
+			
+			classNames={{
+				base: "m-5 w-auto",
+				wrapper: "shadow-none border rounded-lg p-0",
+				table: "", //no lo toma rounded-none
+				thead: "", //no lo toma
+				tbody: "select:none",
+				tr: "",
+				th: "bg-tabs-blue text-white",
+				td: "",
+				tfoot: "",
+				sortIcon: "",
+				emptyWrapper: "",
+				loadingWrapper: "",
+				
+				
+			}}
+
 			selectedKeys={selectedKeys}
 			selectionMode="multiple"
 			sortDescriptor={sortDescriptor}
@@ -288,13 +399,18 @@ export default function ProviderPage() {
 			topContentPlacement="outside"
 			onSelectionChange={setSelectedKeys}
 			onSortChange={setSortDescriptor}
+			
 		>
-			<TableHeader columns={headerColumns}>
+			<TableHeader
+				// css={{backGround:'bg-red-800'}}
+				columns={headerColumns}>
+				
 				{(column) => (
 					<TableColumn
 						key={column.uid}
 						align={column.uid === "actions" ? "center" : "start"}
 						allowsSorting={column.sortable}
+						
 					>
 						{column.name}
 					</TableColumn>
