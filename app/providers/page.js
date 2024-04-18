@@ -1,5 +1,8 @@
 "use client"
 import React, { useState } from "react";
+import PopUpNew from "@/components/popUpNew";
+import TableButtons from "@/components/buttons";
+import ActionsButtons from "@/components/actionsButtons";
 import {
 	Table,
 	TableHeader,
@@ -114,6 +117,11 @@ export default function ProviderPage() {
 			case "actions":
 				return (
 					<div className="relative flex justify-center items-center gap-1">
+						<TableButtons editButtonRow={true} deleteButtonRow={true} viewButtonRow={false} />
+						{/* <TableButtons seeButton={"viewButtonRow"} /> */}
+						{/* <TableButtons seeButton={"editButtonRow"} />
+						<TableButtons seeButton={"deleteButtonRow"} /> */}
+						{/* <ActionsButtons /> */}
 						{/* <Dropdown>
 							<DropdownTrigger>
 								<Button isIconOnly size="sm" variant="light">
@@ -126,7 +134,7 @@ export default function ProviderPage() {
 								<DropdownItem>Delete</DropdownItem>
 							</DropdownMenu>
 						</Dropdown> */}
-						<Button 
+						{/* <Button 
 							color="warning" 
 							size="sm" 
 							aria-label="Delete"
@@ -155,7 +163,7 @@ export default function ProviderPage() {
 							variant="faded" 
 						>
 							<FontAwesomeIcon size="md" icon={faTrashCan} />
-						</Button>
+						</Button> */}
 						
 					</div>
 				);
@@ -200,16 +208,20 @@ export default function ProviderPage() {
 			<div className="flex justify-between">
 				<div className="flex gap-1.5">
 					<div className="flex flex-wrap gap-4 items-center">	
-						<Button 
+						{/* <Button 
 							color="primary" 
 							variant="ghost"
 							className="h-7 font-bold text-xs font-normal py-2 px-2 rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
 						>
 							Nuevo Proveedor
-						</Button>  
+						</Button>   */}
+						<PopUpNew showButton={"newProviderButton"} />
 					</div>
 					<div className="flex gap-4 items-center">
-						<Button 
+						<TableButtons deleteButtonHead={true}/>
+						{/* <DeleteButton /> */}
+						{/* <TableButtons seeButton={"deleteButtonHead"} /> */}
+						{/* <Button 
 							color="warning" 
 							size="sm" 
 							aria-label="Delete"
@@ -218,7 +230,7 @@ export default function ProviderPage() {
 							variant="faded" 
 						>
 							<FontAwesomeIcon size="md" icon={faTrashCan} />
-						</Button>
+						</Button> */}
 					</div>
 					<div className="flex justify-between items-center">
 						<label className="flex items-center text-black text-small ">
@@ -323,7 +335,7 @@ export default function ProviderPage() {
 				<span className="text-default-400 text-small">Mostrando {page} - {pages} de {users.length} entradas</span>
 				<div className="hidden sm:flex w-[30%] justify-end gap-0.5 h-9">
 					<Button 
-					className="rounded-none h-auto text-black text-sm"
+					className="rounded-lg h-auto text-black text-sm"
 					isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
 						Anterior
 					</Button>
@@ -343,7 +355,7 @@ export default function ProviderPage() {
 							prev: "",
 							next: "",
 							item: "",
-							cursor: "bg-primary-blue rounded-none",
+							cursor: "bg-primary-blue",
 							forwardIcon: "",
 							ellipsis: "",
 							chevronNext: "",
@@ -351,7 +363,7 @@ export default function ProviderPage() {
 						}}
 					/>
 					<Button
-					 className="rounded-none h-auto text-black text-sm"
+					 className="rounded-lg h-auto text-black text-sm"
 					 isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
 						Siguiente
 					</Button>
