@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import PopUpNew from "@/components/popUpNew";
 import TableButtons from "@/components/buttons";
 import ActionsButtons from "@/components/actionsButtons";
+import TableTabs from "@/components/tabs";
 import {
 	Table,
 	TableHeader,
@@ -19,14 +20,15 @@ import {
 	Chip,
 	User,
 	Pagination,
+	Popover
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { SearchIcon } from "./SearchIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
+// import { PlusIcon } from "./PlusIcon";
+// import { VerticalDotsIcon } from "./VerticalDotsIcon";
+// import { SearchIcon } from "./SearchIcon";
+// import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, users, statusOptions } from "./data";
-import { capitalize } from "./utils";
-import styles from './Providers.module.css';
+// import { capitalize } from "./utils";
+// import styles from './Providers.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPencil, faEye } from "@fortawesome/free-solid-svg-icons";
 
@@ -38,7 +40,7 @@ const statusColorMap = {
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 
-export default function ProviderPage() {
+export default function ArticlePage() {
 	const [filterValue, setFilterValue] = React.useState("");
 	const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
 	const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -117,55 +119,56 @@ export default function ProviderPage() {
 			case "actions":
 				return (
 					<div className="relative flex justify-center items-center gap-1">
-						<TableButtons editButtonRow={true} deleteButtonRow={true} viewButtonRow={false} />
-						{/* <TableButtons seeButton={"viewButtonRow"} /> */}
+						<TableButtons deleteButtonRow={true} editButtonRow={true} viewButtonRow={true} />
 						{/* <TableButtons seeButton={"editButtonRow"} />
 						<TableButtons seeButton={"deleteButtonRow"} /> */}
-						{/* <ActionsButtons /> */}
-						{/* <Dropdown>
-							<DropdownTrigger>
-								<Button isIconOnly size="sm" variant="light">
-									<VerticalDotsIcon className="text-default-300" />
-								</Button>
-							</DropdownTrigger>
-							<DropdownMenu>
-								<DropdownItem>View</DropdownItem>
-								<DropdownItem>Edit</DropdownItem>
-								<DropdownItem>Delete</DropdownItem>
-							</DropdownMenu>
-						</Dropdown> */}
-						{/* <Button 
-							color="warning" 
-							size="sm" 
-							aria-label="Delete"
-							className="bg-white rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
-							isIconOnly 
-							variant="faded" 
-						>
-							<FontAwesomeIcon size="md" icon={faEye} />
-						</Button>
-						<Button 
-							color="warning" 
-							size="sm" 
-							aria-label="Delete"
-							className="bg-white rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
-							isIconOnly 
-							variant="faded" 
-						>
-							<FontAwesomeIcon size="md" icon={faPencil} />
-						</Button>
-						<Button 
-							color="warning" 
-							size="sm" 
-							aria-label="Delete"
-							className="bg-white rounded border border-tabs-red text-tabs-red hover:bg-tabs-red hover:text-white"
-							isIconOnly 
-							variant="faded" 
-						>
-							<FontAwesomeIcon size="md" icon={faTrashCan} />
-						</Button> */}
-						
 					</div>
+					// <ActionsButtons />
+					// <div className="relative flex justify-center items-center gap-1">
+					// 	{/* <Dropdown>
+					// 		<DropdownTrigger>
+					// 			<Button isIconOnly size="sm" variant="light">
+					// 				<VerticalDotsIcon className="text-default-300" />
+					// 			</Button>
+					// 		</DropdownTrigger>
+					// 		<DropdownMenu>
+					// 			<DropdownItem>View</DropdownItem>
+					// 			<DropdownItem>Edit</DropdownItem>
+					// 			<DropdownItem>Delete</DropdownItem>
+					// 		</DropdownMenu>
+					// 	</Dropdown> */}
+					// 	<Button 
+					// 		color="warning" 
+					// 		size="sm" 
+					// 		aria-label="view"
+					// 		className="bg-white rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
+					// 		isIconOnly 
+					// 		variant="faded" 
+					// 	>
+					// 		<FontAwesomeIcon size="md" icon={faEye} />
+					// 	</Button>
+					// 	<Button 
+					// 		color="warning" 
+					// 		size="sm" 
+					// 		aria-label="edit"
+					// 		className="bg-white rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
+					// 		isIconOnly 
+					// 		variant="faded" 
+					// 	>
+					// 		<FontAwesomeIcon size="md" icon={faPencil} />
+					// 	</Button>
+					// 	<Button 
+					// 		color="warning" 
+					// 		size="sm" 
+					// 		aria-label="Delete"
+					// 		className="bg-white rounded border border-tabs-red text-tabs-red hover:bg-tabs-red hover:text-white"
+					// 		isIconOnly 
+					// 		variant="faded" 
+					// 	>
+					// 		<FontAwesomeIcon size="md" icon={faTrashCan} />
+					// 	</Button>
+						
+					// </div>
 				);
 			default:
 				return cellValue;
@@ -203,31 +206,34 @@ export default function ProviderPage() {
 		setPage(1)
 	}, [])
 
-	const [showModal, setShowModal] = useState(false);
-	console.log("showModal",showModal)
+	const backdrops = ["opaque", "blur", "transparent"];
 
+	const [showModal, setShowModal] = useState(false);
+	
 	const topContent = React.useMemo(() => {
 		return (
+			<div>
+				<div>
+					<TableTabs />
+				</div>
+				
+			
 			<div className="flex justify-between">
 				<div className="flex gap-1.5">
-					<div className="flex flex-wrap gap-4 items-center">	
+					<div className="flex gap-4 items-center">	
 						{/* <Button 
 							color="primary" 
 							variant="ghost"
 							className="h-7 font-bold text-xs font-normal py-2 px-2 rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
 						>
-							Nuevo Proveedor
+							Agregar Nuevo
 						</Button>   */}
-						{
-							showModal &&
-							<>
-								<PopUpNew showModal={showModal} setShowModal={setShowModal}/>
-							</>
-						}
+						<PopUpNew showModal={showModal} setShowModal={setShowModal}/>
+
 						
 					</div>
 					<div className="flex gap-4 items-center">
-						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Nuevo proveedor"} deleteButtonHead={true} setShowModal={setShowModal}/>
+						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Agregar nuevo"} deleteButtonHead={true} setShowModal={setShowModal}/>
 						{/* <DeleteButton /> */}
 						{/* <TableButtons seeButton={"deleteButtonHead"} /> */}
 						{/* <Button 
@@ -327,6 +333,7 @@ export default function ProviderPage() {
 				
 				
 			</div>
+			</div>
 		);
 	}, [
 		filterValue,
@@ -365,7 +372,7 @@ export default function ProviderPage() {
 							prev: "",
 							next: "",
 							item: "",
-							cursor: "bg-primary-blue",
+							cursor: "bg-primary-blue", //rounded-r-none
 							forwardIcon: "",
 							ellipsis: "",
 							chevronNext: "",

@@ -12,6 +12,11 @@ module.exports = {
     extend: {
       colors: {
         'primary-blue': '#0866C6',
+        'tabs-blue': '#064d95',
+        'tabs-grey-one': '#b1b1b1',
+        'tabs-grey-two': '#737c85',
+        'tabs-grey-three': '#868ba1',
+        'tabs-red': '#dc3545'
       },
     },
   },
