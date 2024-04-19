@@ -203,6 +203,9 @@ export default function ProviderPage() {
 		setPage(1)
 	}, [])
 
+	const [showModal, setShowModal] = useState(false);
+	console.log("showModal",showModal)
+
 	const topContent = React.useMemo(() => {
 		return (
 			<div className="flex justify-between">
@@ -215,10 +218,16 @@ export default function ProviderPage() {
 						>
 							Nuevo Proveedor
 						</Button>   */}
-						<PopUpNew showButton={"newProviderButton"} />
+						{
+							showModal &&
+							<>
+								<PopUpNew showModal={showModal} setShowModal={setShowModal}/>
+							</>
+						}
+						
 					</div>
 					<div className="flex gap-4 items-center">
-						<TableButtons deleteButtonHead={true}/>
+						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Nuevo proveedor"} deleteButtonHead={true} setShowModal={setShowModal}/>
 						{/* <DeleteButton /> */}
 						{/* <TableButtons seeButton={"deleteButtonHead"} /> */}
 						{/* <Button 
@@ -327,6 +336,7 @@ export default function ProviderPage() {
 		users.length,
 		onSearchChange,
 		hasSearchFilter,
+		showModal,
 	]);
 
 	const bottomContent = React.useMemo(() => {

@@ -207,6 +207,8 @@ export default function ArticlePage() {
 	}, [])
 
 	const backdrops = ["opaque", "blur", "transparent"];
+
+	const [showModal, setShowModal] = useState(false);
 	
 	const topContent = React.useMemo(() => {
 		return (
@@ -226,10 +228,12 @@ export default function ArticlePage() {
 						>
 							Agregar Nuevo
 						</Button>   */}
-						<PopUpNew showButton={"newArticleButton"} />
+						<PopUpNew showModal={showModal} setShowModal={setShowModal}/>
+
+						
 					</div>
 					<div className="flex gap-4 items-center">
-						<TableButtons deleteButtonHead={true}/>
+						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Agregar nuevo"} deleteButtonHead={true} setShowModal={setShowModal}/>
 						{/* <DeleteButton /> */}
 						{/* <TableButtons seeButton={"deleteButtonHead"} /> */}
 						{/* <Button 
@@ -339,6 +343,7 @@ export default function ArticlePage() {
 		users.length,
 		onSearchChange,
 		hasSearchFilter,
+		showModal,
 	]);
 
 	const bottomContent = React.useMemo(() => {

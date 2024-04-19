@@ -4,10 +4,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPencil, faEye } from "@fortawesome/free-solid-svg-icons";
 
 
-export default function TableButtons( {deleteButtonHead, deleteButtonRow, editButtonRow, viewButtonRow }) {
+export default function TableButtons( {buttonCreateNew, buttonCreateNewText, deleteButtonHead, setShowModal, deleteButtonRow, editButtonRow, viewButtonRow }) {
   
   return (
     <>
+        {
+          buttonCreateNew &&
+          <Button 
+            onClick={() => setShowModal(true)}
+            className="h-7 bg-white rounded border border-primary-blue text-primary-blue hover:bg-primary-blue hover:text-white"
+            color="primary"
+            >{buttonCreateNewText}
+          </Button>
+        }
         { deleteButtonHead &&
           <Button 
             name="deleteButton"
