@@ -62,6 +62,8 @@ export default function ProviderPage() {
 
 	const [users, setProviders] = useState([]);
 
+	const [newProvider, setNewProvider] = useState([]);
+
 	console.log("users", users);
 
 	const obtenerProviders = async () => {
@@ -146,7 +148,7 @@ export default function ProviderPage() {
 			// 	);
 			case "actions":
 				return (
-					<div className="relative flex justify-center items-center gap-1">
+					<div className="relative flex items-center gap-1">
 						<TableButtons editButtonRow={true} deleteButtonRow={true} viewButtonRow={false} />
 						{/* <TableButtons seeButton={"viewButtonRow"} /> */}
 						{/* <TableButtons seeButton={"editButtonRow"} />
@@ -234,6 +236,8 @@ export default function ProviderPage() {
 	}, [])
 
 	const [showModal, setShowModal] = useState(false);
+
+	const [typeModal, setTypeModal] = useState("create");
 	console.log("showModal",showModal)
 
 	useEffect(() => {
@@ -255,13 +259,13 @@ export default function ProviderPage() {
 						{
 							showModal &&
 							<>
-								<PopUpNew showModal={showModal} setShowModal={setShowModal}/>
+								<PopUpNew showModal={showModal} typeModal={typeModal} setShowModal={setShowModal}/>
 							</>
 						}
 						
 					</div>
 					<div className="flex gap-4 items-center">
-						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Nuevo proveedor"} deleteButtonHead={true} setShowModal={setShowModal}/>
+						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Nuevo proveedor"} deleteButtonHead={true} setShowModal={setShowModal} setTypeModal={setTypeModal}/>
 						{/* <DeleteButton /> */}
 						{/* <TableButtons seeButton={"deleteButtonHead"} /> */}
 						{/* <Button 
@@ -371,6 +375,7 @@ export default function ProviderPage() {
 		onSearchChange,
 		hasSearchFilter,
 		showModal,
+		typeModal,
 	]);
 
 	const bottomContent = React.useMemo(() => {
@@ -464,9 +469,8 @@ export default function ProviderPage() {
 				{(column) => (
 					<TableColumn
 						key={column.uid}
-						align={column.uid === "actions" ? "center" : "start"}
+						// align={column.uid === "nombre" ? "end" : "end"}
 						allowsSorting={column.sortable}
-						
 					>
 						{column.name}
 					</TableColumn>
