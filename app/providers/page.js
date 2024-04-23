@@ -1,8 +1,9 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import PopUpNew from "@/components/popUpNew";
 import TableButtons from "@/components/buttons";
-import ActionsButtons from "@/components/actionsButtons";
+import axios from "axios";
+// import ActionsButtons from "@/components/actionsButtons";
 import {
 	Table,
 	TableHeader,
@@ -12,31 +13,32 @@ import {
 	TableCell,
 	Input,
 	Button,
-	DropdownTrigger,
-	Dropdown,
-	DropdownMenu,
-	DropdownItem,
+	// DropdownTrigger,
+	// Dropdown,
+	// DropdownMenu,
+	// DropdownItem,
 	Chip,
 	User,
 	Pagination,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { SearchIcon } from "./SearchIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
-import { columns, users, statusOptions } from "./data";
-import { capitalize } from "./utils";
+
+// import { PlusIcon } from "./PlusIcon";
+// import { VerticalDotsIcon } from "./VerticalDotsIcon";
+// import { SearchIcon } from "./SearchIcon";
+// import { ChevronDownIcon } from "./ChevronDownIcon";
+// import { columns } from "./data";
+// import { capitalize } from "./utils";
 import styles from './Providers.module.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan, faPencil, faEye } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTrashCan, faPencil, faEye } from "@fortawesome/free-solid-svg-icons";
 
-const statusColorMap = {
-	active: "success",
-	paused: "danger",
-	vacation: "warning",
-};
+// const statusColorMap = {
+// 	active: "success",
+// 	paused: "danger",
+// 	vacation: "warning",
+// };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id", "nombre", "cuil", "telefono", "actions"];
 
 export default function ProviderPage() {
 	const [filterValue, setFilterValue] = React.useState("");
@@ -48,7 +50,35 @@ export default function ProviderPage() {
 		column: "age",
 		direction: "ascending",
 	});
+
+	const columns = [
+		{name: "#", uid: "id", sortable: true},
+		{name: "NOMBRE", uid: "nombre", sortable: true},
+		{name: "CUIL", uid: "cuil", sortable: true},
+		{name: "TELÉFONO", uid: "telefono", sortable: true},
+		{name: "DIRECCIÓN", uid: "direccion", sortable: true},
+		{name: "ACCIONES", uid: "actions"},
+	];
+
+	const [users, setProviders] = useState([]);
+
+	console.log("users", users);
+
+	const obtenerProviders = async () => {
+		const { data } = await axios("http://localhost:1337/api/providers");
+		const modifiedData = data.data.map(item => ({
+			...item,
+			attributes: {
+				...item.attributes,
+				id: item.id
+			}
+		}));
+		setProviders(modifiedData);
+	};
+
 	const [page, setPage] = React.useState(1);
+
+	console.log("page: ", page);
 
 	const hasSearchFilter = Boolean(filterValue);
 
@@ -60,17 +90,17 @@ export default function ProviderPage() {
 
 	const filteredItems = React.useMemo(() => {
 		let filteredUsers = [...users];
-
+		console.log("filteredUsers", filteredUsers);
 		if (hasSearchFilter) {
 			filteredUsers = filteredUsers.filter((user) =>
-				user.name.toLowerCase().includes(filterValue.toLowerCase()),
+				user.attributes.nombre.toLowerCase().includes(filterValue.toLowerCase()),
 			);
 		}
-		if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-			filteredUsers = filteredUsers.filter((user) =>
-				Array.from(statusFilter).includes(user.status),
-			);
-		}
+		// if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
+		// 	filteredUsers = filteredUsers.filter((user) =>
+		// 		Array.from(statusFilter).includes(user.status),
+		// 	);
+		// }
 
 		return filteredUsers;
 	}, [users, filterValue, statusFilter]);
@@ -98,22 +128,22 @@ export default function ProviderPage() {
 		const cellValue = user[columnKey];
 
 		switch (columnKey) {
-			case "name":
-				return (
-					<User
-						avatarProps={{ radius: "lg", src: user.avatar }}
-						description={user.email}
-						name={cellValue}
-					>
-						{user.email}
-					</User>
-				);
-			case "status":
-				return (
-					<Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-						{cellValue}
-					</Chip>
-				);
+			// case "nombre":
+			// 	return (
+			// 		<User
+			// 			avatarProps={{ radius: "lg", src: user.avatar }}
+			// 			description={user.email}
+			// 			name={cellValue}
+			// 		>
+			// 			{user.email}
+			// 		</User>
+			// 	);
+			// case "status":
+			// 	return (
+			// 		<Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
+			// 			{cellValue}
+			// 		</Chip>
+			// 	);
 			case "actions":
 				return (
 					<div className="relative flex justify-center items-center gap-1">
@@ -205,6 +235,10 @@ export default function ProviderPage() {
 
 	const [showModal, setShowModal] = useState(false);
 	console.log("showModal",showModal)
+
+	useEffect(() => {
+		obtenerProviders();
+	}, []);
 
 	const topContent = React.useMemo(() => {
 		return (
@@ -438,10 +472,10 @@ export default function ProviderPage() {
 					</TableColumn>
 				)}
 			</TableHeader>
-			<TableBody emptyContent={"No users found"} items={sortedItems}>
+			<TableBody emptyContent={"No hay proveedores"} items={sortedItems}>
 				{(item) => (
 					<TableRow key={item.id}>
-						{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+						{(columnKey) => <TableCell>{renderCell(item.attributes, columnKey)}</TableCell>}
 					</TableRow>
 				)}
 			</TableBody>
