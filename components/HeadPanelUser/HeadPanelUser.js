@@ -53,8 +53,8 @@ const HeadPanelUser = () => {
                             className="h-14 gap-2 opacity-100"
                         >
                             <User
-                                name="Junior Garcia"
-                                description="@jrgarciadev"
+                                name="Franco Gatica"
+                                description="@francogaticadev"
                                 classNames={{
                                     name: "text-default-600",
                                     description: "text-default-500",

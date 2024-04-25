@@ -1,8 +1,9 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import PopUpNew from "@/components/popUpNew";
 import TableButtons from "@/components/buttons";
-import ActionsButtons from "@/components/actionsButtons";
+import axios from "axios";
+// import ActionsButtons from "@/components/actionsButtons";
 import {
 	Table,
 	TableHeader,
@@ -12,31 +13,32 @@ import {
 	TableCell,
 	Input,
 	Button,
-	DropdownTrigger,
-	Dropdown,
-	DropdownMenu,
-	DropdownItem,
+	// DropdownTrigger,
+	// Dropdown,
+	// DropdownMenu,
+	// DropdownItem,
 	Chip,
 	User,
 	Pagination,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { SearchIcon } from "./SearchIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
-import { columns, users, statusOptions } from "./data";
-import { capitalize } from "./utils";
+
+// import { PlusIcon } from "./PlusIcon";
+// import { VerticalDotsIcon } from "./VerticalDotsIcon";
+// import { SearchIcon } from "./SearchIcon";
+// import { ChevronDownIcon } from "./ChevronDownIcon";
+// import { columns } from "./data";
+// import { capitalize } from "./utils";
 import styles from './Providers.module.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan, faPencil, faEye } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTrashCan, faPencil, faEye } from "@fortawesome/free-solid-svg-icons";
 
-const statusColorMap = {
-	active: "success",
-	paused: "danger",
-	vacation: "warning",
-};
+// const statusColorMap = {
+// 	active: "success",
+// 	paused: "danger",
+// 	vacation: "warning",
+// };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id", "nombre", "cuil", "telefono", "actions"];
 
 export default function ProviderPage() {
 	const [filterValue, setFilterValue] = React.useState("");
@@ -45,10 +47,49 @@ export default function ProviderPage() {
 	const [statusFilter, setStatusFilter] = React.useState("all");
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [sortDescriptor, setSortDescriptor] = React.useState({
-		column: "age",
+		column: "id",
 		direction: "ascending",
 	});
+
+	const columns = [
+		{name: "#", uid: "id", sortable: true},
+		{name: "NOMBRE", uid: "nombre", sortable: true},
+		{name: "CUIL", uid: "cuil", sortable: true},
+		{name: "TELÉFONO", uid: "telefono", sortable: true},
+		{name: "DIRECCIÓN", uid: "direccion", sortable: true},
+		{name: "ACCIONES", uid: "actions"},
+	];
+
+	const dataArray = {
+		nombre: "",
+		cuil: "",
+		telefono: "",
+		direccion: "",
+	}
+
+	const [users, setProviders] = useState([]);
+
+	// const [newProvider, setNewProvider] = useState([]);
+
+	console.log("users", users);
+
+	const obtenerProviders = async () => {
+		const { data } = await axios("http://localhost:1337/api/providers");
+		const modifiedData = data.data.map(item => ({
+			...item,
+			attributes: {
+				...item.attributes,
+				id: item.id
+			}
+		}));
+		setProviders(modifiedData);
+	};
+
+	const [data, setData] = useState({});
+
 	const [page, setPage] = React.useState(1);
+
+	console.log("page: ", page);
 
 	const hasSearchFilter = Boolean(filterValue);
 
@@ -60,10 +101,10 @@ export default function ProviderPage() {
 
 	const filteredItems = React.useMemo(() => {
 		let filteredUsers = [...users];
-
+		console.log("filteredUsers", filteredUsers);
 		if (hasSearchFilter) {
 			filteredUsers = filteredUsers.filter((user) =>
-				user.name.toLowerCase().includes(filterValue.toLowerCase()),
+				user.attributes.nombre.toLowerCase().includes(filterValue.toLowerCase()),
 			);
 		}
 		if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
@@ -96,28 +137,29 @@ export default function ProviderPage() {
 
 	const renderCell = React.useCallback((user, columnKey) => {
 		const cellValue = user[columnKey];
-
+		// console.log("user",user)
+		// console.log("columnKey",columnKey)
 		switch (columnKey) {
-			case "name":
-				return (
-					<User
-						avatarProps={{ radius: "lg", src: user.avatar }}
-						description={user.email}
-						name={cellValue}
-					>
-						{user.email}
-					</User>
-				);
-			case "status":
-				return (
-					<Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-						{cellValue}
-					</Chip>
-				);
+			// case "nombre":
+			// 	return (
+			// 		<User
+			// 			avatarProps={{ radius: "lg", src: user.avatar }}
+			// 			description={user.email}
+			// 			name={cellValue}
+			// 		>
+			// 			{user.email}
+			// 		</User>
+			// 	);
+			// case "status":
+			// 	return (
+			// 		<Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
+			// 			{cellValue}
+			// 		</Chip>
+			// 	);
 			case "actions":
 				return (
-					<div className="relative flex justify-center items-center gap-1">
-						<TableButtons editButtonRow={true} deleteButtonRow={true} viewButtonRow={false} />
+					<div className="relative flex items-center gap-1">
+						<TableButtons data={user} setData={setData} editButtonRow={true} deleteButtonRow={true} viewButtonRow={false} setShowModal={setShowModal} setTypeModal={setTypeModal}/>
 						{/* <TableButtons seeButton={"viewButtonRow"} /> */}
 						{/* <TableButtons seeButton={"editButtonRow"} />
 						<TableButtons seeButton={"deleteButtonRow"} /> */}
@@ -204,7 +246,13 @@ export default function ProviderPage() {
 	}, [])
 
 	const [showModal, setShowModal] = useState(false);
+
+	const [typeModal, setTypeModal] = useState("create");
 	console.log("showModal",showModal)
+
+	useEffect(() => {
+		obtenerProviders();
+	}, []);
 
 	const topContent = React.useMemo(() => {
 		return (
@@ -221,13 +269,13 @@ export default function ProviderPage() {
 						{
 							showModal &&
 							<>
-								<PopUpNew showModal={showModal} setShowModal={setShowModal}/>
+								<PopUpNew data={data} showModal={showModal} typeModal={typeModal} setShowModal={setShowModal} dataArray={dataArray} obtenerProviders={obtenerProviders}/>
 							</>
 						}
 						
 					</div>
 					<div className="flex gap-4 items-center">
-						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Nuevo proveedor"} deleteButtonHead={true} setShowModal={setShowModal}/>
+						<TableButtons buttonCreateNew={true} buttonCreateNewText={"Nuevo proveedor"} deleteButtonHead={true} setShowModal={setShowModal} setTypeModal={setTypeModal}/>
 						{/* <DeleteButton /> */}
 						{/* <TableButtons seeButton={"deleteButtonHead"} /> */}
 						{/* <Button 
@@ -337,12 +385,14 @@ export default function ProviderPage() {
 		onSearchChange,
 		hasSearchFilter,
 		showModal,
+		typeModal,
+		// obtenerProviders,
 	]);
 
 	const bottomContent = React.useMemo(() => {
 		return (
 			<div className="py-2 px-2 flex justify-between items-center">
-				<span className="text-default-400 text-small">Mostrando {page} - {pages} de {users.length} entradas</span>
+				<span className="text-default-400 text-small">Mostrando {page} - {pages} de {users.length} resultados</span>
 				<div className="hidden sm:flex w-[30%] justify-end gap-0.5 h-9">
 					<Button 
 					className="rounded-lg h-auto text-black text-sm"
@@ -355,11 +405,10 @@ export default function ProviderPage() {
 						showShadow
 						color="primary-blue"
 						page={page}
-						
+						// initialPage={1}
 						total={pages}
 						onChange={setPage}
-						classNames={{
-							
+						classNames={{	
 							base: "",
 							wrapper: "h-full",
 							prev: "",
@@ -369,7 +418,7 @@ export default function ProviderPage() {
 							forwardIcon: "",
 							ellipsis: "",
 							chevronNext: "",
-
+							// cursor: "bg-gradient-to-b shadow-lg from-default-500 to-default-800 dark:from-default-300 dark:to-default-100 text-white font-bold",
 						}}
 					/>
 					<Button
@@ -380,7 +429,7 @@ export default function ProviderPage() {
 				</div>
 			</div>
 		);
-	}, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+	}, [selectedKeys, items.length, page, pages, hasSearchFilter, obtenerProviders]);
 
 	return (
 		<Table
@@ -430,18 +479,17 @@ export default function ProviderPage() {
 				{(column) => (
 					<TableColumn
 						key={column.uid}
-						align={column.uid === "actions" ? "center" : "start"}
+						// align={column.uid === "nombre" ? "end" : "end"}
 						allowsSorting={column.sortable}
-						
 					>
 						{column.name}
 					</TableColumn>
 				)}
 			</TableHeader>
-			<TableBody emptyContent={"No users found"} items={sortedItems}>
+			<TableBody emptyContent={"No hay proveedores"} items={sortedItems}>
 				{(item) => (
 					<TableRow key={item.id}>
-						{(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+						{(columnKey) => <TableCell>{renderCell(item.attributes, columnKey)}</TableCell>}
 					</TableRow>
 				)}
 			</TableBody>
