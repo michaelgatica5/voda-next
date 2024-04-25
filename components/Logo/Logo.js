@@ -9,16 +9,17 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 const Logo = () => {
     return (
         <>
-                <Link href="/">
+                <Link href="/" className="w-32 h-full block">
                     <Image 
-                    width={140}
+                    width={140} //140
                     height={65}    
                     src='/img/voda-logo.png'
                     alt="Logo Voda"
+                    className=""
                     />
                 </Link>
                 <Link href="#" className={`transition-all duration-200 ease-in-out ${styles.logoBar}`}>
-                    <FontAwesomeIcon className={`w-6`}  icon={faBars}  />
+                    <FontAwesomeIcon className={`w-6 h-6 block`}  icon={faBars}  />
                 </Link>
         </>
         
