@@ -19,21 +19,19 @@ const Sidebar = () => {
         <div className={``}> {/* seria el ul */}
             <div> {/* seria el li */}
                 <Link href={'/'} className={` ${router == "/" ? "active" : ""} ${styles.itemSidebar} transition-all duration-200 ease-in-out flex items-center w-full relative py-0 px-3`}>
-                    <div className={``}>
-                        <FontAwesomeIcon size="xl" className={`mr-1.5`} icon={faHouse} />
+                        <FontAwesomeIcon size="" className={`mr-1.5 h-5`} icon={faHouse}  />
                         <span className={`text-sm ${styles.textSidebar}`}>Inicio</span>                    
-                    </div>
                 </Link>
             </div>
             <div > {/* seria el li */}
                 <Link href={'/providers'} className={`${router == "/providers" ? "active" : ""} ${styles.itemSidebar} transition-all duration-200 ease-in-out flex items-center w-full relative py-0 px-3 `}>
-                <FontAwesomeIcon icon={faTruck} size="lg" flip="horizontal" className={`mr-1.5`} />
+                <FontAwesomeIcon icon={faTruck} size="" flip="" className={`mr-1.5 h-5`} />
                     <span className={`text-sm ${styles.textSidebar}`}>Proveedores</span>
                 </Link>
             </div>
             <div > {/* seria el li */}
                 <Link href={'/articles'} className={` ${router == "/articles" ? "active" : ""} ${styles.itemSidebar} transition-all duration-200 ease-in-out flex items-center w-full relative py-0 px-3 `}>
-                    <FontAwesomeIcon icon={faTableCells} size="xl" flip="horizontal" className={`mr-1.5`} />
+                    <FontAwesomeIcon icon={faTableCells} size="" flip="" className={`mr-1.5 h-5`} />
                     <span className={`text-sm ${styles.textSidebar}`}>Artículos</span>
                 </Link>
             </div>

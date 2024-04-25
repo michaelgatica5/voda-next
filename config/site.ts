@@ -1,7 +1,9 @@
+import { title } from "process";
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-	name: "Next.js + NextUI",
+	name: "VODA Piscinas",
 	description: "Make beautiful websites regardless of your design experience.",
 	navItems: [
 		{
