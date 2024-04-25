@@ -1,18 +1,75 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link} from "@nextui-org/react";
+import axios from "axios";
 // import {MailIcon} from './MailIcon.jsx';
 // import {LockIcon} from './LockIcon.jsx';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import {animals} from "./data";
 import TableButtons from "@/components/buttons";
+import { create } from "domain";
 
 
 
-export default function App({ showModal, setShowModal, typeModal }) {
+export default function App({ data, showModal, setShowModal, typeModal, dataArray, obtenerProviders }) {
+
+  const [newData, setNewData] = useState({
+    ...dataArray,
+  })
+
+  const [editData, setEditData] = useState({
+    ...data,
+  })
+
+  console.log("edit data",editData)
+
+  const createNew = async () => {
+    try {
+      await axios.post("http://localhost:1337/api/providers", {
+        data: newData
+      })
+      setTimeout(() => {  
+          obtenerProviders()
+          setShowModal(false)
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteItem = async (data) => {
+    console.log("Entra en delete popup", data)
+    try {
+      await axios.delete(`http://localhost:1337/api/providers/${data.id}`);
+      console.log("Elemento eliminado exitosamente");
+      obtenerProviders()
+      setShowModal(false)
+      // Lógica adicional después de eliminar el proveedor, si es necesario
+    } catch (error) {
+      console.error("Error al eliminar:", error);
+    }
+  };
+
+  const editOne = async (data) => {
+    console.log("entra en guardar edit")
+    try {
+      await axios.put(`http://localhost:1337/api/providers/${data.id}`, {
+        data: editData,
+      })
+      console.log("Elemento editado exitosamente");
+      obtenerProviders()
+      setShowModal(false)
+      // Lógica adicional después de eliminar el proveedor, si es necesario
+    }catch (error) {
+      console.error("Error al editar:", error);
+    }
+  }
+
+  console.log("newData", newData)
   // const {isOpen, onOpen, onOpenChange} = useDisclosure(true);
-  const variants = ["flat", "bordered", "underlined", "faded"];
+  // const variants = ["flat", "bordered", "underlined", "faded"];
 
   // console.log("isOpen",isOpen)
+
 
   return (
     <>
@@ -59,6 +116,7 @@ export default function App({ showModal, setShowModal, typeModal }) {
                       label="Nombre:"
                       placeholder="Ingrese Nombre"
                       className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setNewData({ ...newData, nombre: e.target.value }) }}
                     />
                     <Input
                       isRequired
@@ -68,6 +126,7 @@ export default function App({ showModal, setShowModal, typeModal }) {
                       label="CUIL:"
                       placeholder="Ingrese CUIL"
                       className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setNewData({ ...newData, cuil: e.target.value }) }}
                     />
                     {/* <Autocomplete 
                       isRequired
@@ -97,6 +156,7 @@ export default function App({ showModal, setShowModal, typeModal }) {
                       label="Teléfono"
                       placeholder="Ingrese número de teléfono"
                       className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setNewData({ ...newData, telefono: e.target.value }) }}
                       // startContent={
                       //   <div className="pointer-events-none flex items-center">
                       //     <span className="text-default-400 text-small"></span>
@@ -109,6 +169,7 @@ export default function App({ showModal, setShowModal, typeModal }) {
                       label="Dirección"
                       placeholder="Ingrese dirección"
                       className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setNewData({ ...newData, direccion: e.target.value }) }}
                       // startContent={
                       //   <div className="pointer-events-none flex items-center">
                       //     <span className="text-default-400 text-small"></span>
@@ -117,7 +178,8 @@ export default function App({ showModal, setShowModal, typeModal }) {
                     />
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="primary" onClick={() => setShowModal(false)}>
+                    {/* <Button color="primary" onClick={() => setShowModal(false)}> */}
+                    <Button color="primary" onClick={() => createNew()}>
                       Crear
                     </Button>
                     <Button color="danger" variant="flat" onClick={() => setShowModal(false)}>
@@ -128,6 +190,93 @@ export default function App({ showModal, setShowModal, typeModal }) {
               }
             </ModalContent>
           }
+
+          {
+            typeModal === "delete" &&
+            <ModalContent>
+              {
+                <>
+                  <ModalHeader className="flex flex-col gap-1 bg-tabs-blue text-white text-sm">ELIMINAR PROVEEDOR</ModalHeader>
+                  <ModalBody className="flex flex-row flex-wrap gap-0">
+                    <div className="px-2 py-2 text-gray-600 text-base leading-6 font-normal">{`Está seguro que desea eliminar "${data.nombre}" de forma permanente?`}</div>
+                  </ModalBody>
+                  <ModalFooter>
+                    {/* <Button color="primary" onClick={() => setShowModal(false)}> */}
+                    <Button color="primary" onClick={() => deleteItem(data)} >
+                      Eliminar
+                    </Button>
+                    <Button color="danger" variant="flat" onClick={() => setShowModal(false)}>
+                      Cerrar
+                    </Button>
+                  </ModalFooter>
+                </>
+              }
+            </ModalContent>
+          }
+
+{
+            typeModal === "edit" &&
+            <ModalContent>
+              {
+                <>
+                  <ModalHeader className="flex flex-col gap-1 bg-tabs-blue text-white text-sm">EDITAR PROVEEDOR</ModalHeader>
+                  <ModalBody className="flex flex-row flex-wrap gap-0">
+                    <Input
+                      isRequired
+                      autoFocus
+                      variant="bordered"
+                      labelPlacement="outside"
+                      label="Nombre:"
+                      placeholder="Ingrese Nombre"
+                      className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setEditData({ ...editData, nombre: e.target.value }) }}
+                      value={editData.nombre ? editData.nombre : ""}
+                    />
+                    <Input
+                      isRequired
+                      variant="bordered"
+                      labelPlacement="outside"
+                      type="number"
+                      label="CUIL:"
+                      placeholder="Ingrese CUIL"
+                      className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setEditData({ ...editData, cuil: e.target.value }) }}
+                      value={editData.cuil ? editData.cuil : ""}
+                    />
+                    <Input
+                      variant="bordered"
+                      labelPlacement="outside"
+                      type="number"
+                      label="Teléfono"
+                      placeholder="Ingrese número de teléfono"
+                      className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setEditData({ ...editData, telefono: e.target.value }) }}
+                      value={editData.telefono ? editData.telefono : ""}
+                    />
+                    <Input
+                      variant="bordered"
+                      labelPlacement="outside"
+                      label="Dirección"
+                      placeholder="Ingrese dirección"
+                      className="w-1/2 px-2 py-2"
+                      onChange={(e) => { setEditData({ ...editData, direccion: e.target.value }) }}
+                      value={editData.direccion ? editData.direccion : ""}
+                    />
+                  </ModalBody>
+                  <ModalFooter>
+                    {/* <Button color="primary" onClick={() => setShowModal(false)}> */}
+                    <Button color="primary" onClick={() => editOne(data)}>
+                      Guardar
+                    </Button>
+                    <Button color="danger" variant="flat" onClick={() => setShowModal(false)}>
+                      Cerrar
+                    </Button>
+                  </ModalFooter>
+                </>
+              }
+            </ModalContent>
+          }
+
           
         </Modal>
         

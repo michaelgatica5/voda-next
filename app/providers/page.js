@@ -47,7 +47,7 @@ export default function ProviderPage() {
 	const [statusFilter, setStatusFilter] = React.useState("all");
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [sortDescriptor, setSortDescriptor] = React.useState({
-		column: "age",
+		column: "id",
 		direction: "ascending",
 	});
 
@@ -60,9 +60,16 @@ export default function ProviderPage() {
 		{name: "ACCIONES", uid: "actions"},
 	];
 
+	const dataArray = {
+		nombre: "",
+		cuil: "",
+		telefono: "",
+		direccion: "",
+	}
+
 	const [users, setProviders] = useState([]);
 
-	const [newProvider, setNewProvider] = useState([]);
+	// const [newProvider, setNewProvider] = useState([]);
 
 	console.log("users", users);
 
@@ -77,6 +84,8 @@ export default function ProviderPage() {
 		}));
 		setProviders(modifiedData);
 	};
+
+	const [data, setData] = useState({});
 
 	const [page, setPage] = React.useState(1);
 
@@ -98,11 +107,11 @@ export default function ProviderPage() {
 				user.attributes.nombre.toLowerCase().includes(filterValue.toLowerCase()),
 			);
 		}
-		// if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-		// 	filteredUsers = filteredUsers.filter((user) =>
-		// 		Array.from(statusFilter).includes(user.status),
-		// 	);
-		// }
+		if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
+			filteredUsers = filteredUsers.filter((user) =>
+				Array.from(statusFilter).includes(user.status),
+			);
+		}
 
 		return filteredUsers;
 	}, [users, filterValue, statusFilter]);
@@ -128,7 +137,8 @@ export default function ProviderPage() {
 
 	const renderCell = React.useCallback((user, columnKey) => {
 		const cellValue = user[columnKey];
-
+		// console.log("user",user)
+		// console.log("columnKey",columnKey)
 		switch (columnKey) {
 			// case "nombre":
 			// 	return (
@@ -149,7 +159,7 @@ export default function ProviderPage() {
 			case "actions":
 				return (
 					<div className="relative flex items-center gap-1">
-						<TableButtons editButtonRow={true} deleteButtonRow={true} viewButtonRow={false} />
+						<TableButtons data={user} setData={setData} editButtonRow={true} deleteButtonRow={true} viewButtonRow={false} setShowModal={setShowModal} setTypeModal={setTypeModal}/>
 						{/* <TableButtons seeButton={"viewButtonRow"} /> */}
 						{/* <TableButtons seeButton={"editButtonRow"} />
 						<TableButtons seeButton={"deleteButtonRow"} /> */}
@@ -259,7 +269,7 @@ export default function ProviderPage() {
 						{
 							showModal &&
 							<>
-								<PopUpNew showModal={showModal} typeModal={typeModal} setShowModal={setShowModal}/>
+								<PopUpNew data={data} showModal={showModal} typeModal={typeModal} setShowModal={setShowModal} dataArray={dataArray} obtenerProviders={obtenerProviders}/>
 							</>
 						}
 						
@@ -376,12 +386,13 @@ export default function ProviderPage() {
 		hasSearchFilter,
 		showModal,
 		typeModal,
+		// obtenerProviders,
 	]);
 
 	const bottomContent = React.useMemo(() => {
 		return (
 			<div className="py-2 px-2 flex justify-between items-center">
-				<span className="text-default-400 text-small">Mostrando {page} - {pages} de {users.length} entradas</span>
+				<span className="text-default-400 text-small">Mostrando {page} - {pages} de {users.length} resultados</span>
 				<div className="hidden sm:flex w-[30%] justify-end gap-0.5 h-9">
 					<Button 
 					className="rounded-lg h-auto text-black text-sm"
@@ -394,11 +405,10 @@ export default function ProviderPage() {
 						showShadow
 						color="primary-blue"
 						page={page}
-						
+						// initialPage={1}
 						total={pages}
 						onChange={setPage}
-						classNames={{
-							
+						classNames={{	
 							base: "",
 							wrapper: "h-full",
 							prev: "",
@@ -408,7 +418,7 @@ export default function ProviderPage() {
 							forwardIcon: "",
 							ellipsis: "",
 							chevronNext: "",
-
+							// cursor: "bg-gradient-to-b shadow-lg from-default-500 to-default-800 dark:from-default-300 dark:to-default-100 text-white font-bold",
 						}}
 					/>
 					<Button
@@ -419,7 +429,7 @@ export default function ProviderPage() {
 				</div>
 			</div>
 		);
-	}, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+	}, [selectedKeys, items.length, page, pages, hasSearchFilter, obtenerProviders]);
 
 	return (
 		<Table
