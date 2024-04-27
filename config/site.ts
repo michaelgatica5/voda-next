@@ -21,6 +21,7 @@ export const siteConfig = {
     {
       label: "Blog",
       href: "/blog",
+	  name: "VODA blog",
     },
     {
       label: "About",

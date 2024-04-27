@@ -47,7 +47,7 @@ export default function ProviderPage() {
 	const [statusFilter, setStatusFilter] = React.useState("all");
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [sortDescriptor, setSortDescriptor] = React.useState({
-		column: "id",
+		column: "id", // id  
 		direction: "ascending",
 	});
 
@@ -403,18 +403,19 @@ export default function ProviderPage() {
 						isCompact
 						// showControls
 						showShadow
-						color="primary-blue"
+						// color="primary-blue"
 						page={page}
 						// initialPage={1}
 						total={pages}
 						onChange={setPage}
+						opacity={1}
 						classNames={{	
 							base: "",
 							wrapper: "h-full",
 							prev: "",
 							next: "",
 							item: "",
-							cursor: "bg-primary-blue",
+							cursor: "opacity-100",
 							forwardIcon: "",
 							ellipsis: "",
 							chevronNext: "",
