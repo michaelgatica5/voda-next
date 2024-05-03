@@ -40,6 +40,7 @@ export default function App({ data, showModal, setShowModal, typeModal, dataArra
       console.log(error);
     }
   };
+  
 
   const deleteItem = async (data) => {
     console.log("Entra en delete popup", data)
