@@ -7,6 +7,7 @@ import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import {animals} from "./data";
 import TableButtons from "@/components/buttons";
 import { create } from "domain";
+import { toast } from 'react-hot-toast';
 
 
 
@@ -31,10 +32,15 @@ export default function App({ data, showModal, setShowModal, typeModal, dataArra
           obtenerProviders()
           setShowModal(false)
       }, 2000);
+      toast.success('Creado con éxito', {
+        duration: 5000,
+        position: 'top-right'
+      });
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   const deleteItem = async (data) => {
     console.log("Entra en delete popup", data)
@@ -43,9 +49,14 @@ export default function App({ data, showModal, setShowModal, typeModal, dataArra
       console.log("Elemento eliminado exitosamente");
       obtenerProviders()
       setShowModal(false)
+      toast.success('Eliminado con éxito', {
+        duration: 5000,
+        position: 'top-right'
+      });
       // Lógica adicional después de eliminar el proveedor, si es necesario
     } catch (error) {
       console.error("Error al eliminar:", error);
+      // toast.error('This is an error!');
     }
   };
 
@@ -58,6 +69,10 @@ export default function App({ data, showModal, setShowModal, typeModal, dataArra
       console.log("Elemento editado exitosamente");
       obtenerProviders()
       setShowModal(false)
+      toast.success('Editado con éxito', {
+        duration: 5000,
+        position: 'top-right'
+      });
       // Lógica adicional después de eliminar el proveedor, si es necesario
     }catch (error) {
       console.error("Error al editar:", error);

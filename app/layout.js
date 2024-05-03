@@ -12,6 +12,7 @@ import Logo from "@/components/Logo/Logo";
 import HeadPanelMenu from "@/components/HeadPanelMenu/HeadPanelMenu";
 import HeadPanelUser from "@/components/HeadPanelUser/HeadPanelUser";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import { Toaster } from "react-hot-toast";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -48,6 +49,7 @@ export default function RootLayout({
 						<Sidebar />
 					</div>
 					<div className={`${styles.mainpanel}`}>
+						 <Toaster /> {/*position="bottom-center" */}
 						{children}
 					</div>
 				</main>
